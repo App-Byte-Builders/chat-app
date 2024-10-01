@@ -12,13 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Chat App',
       theme: ThemeData(
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Home'),
     );
   }
 }
@@ -36,71 +36,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  List<String> _message = [];
-  late IO.Socket socket;
 
-  String _error = '';
-  @override
-  void initState() {
-    connectToServer();
-    super.initState();
-  }
-
-  void connectToServer(){
-    socket=IO.io('http://192.168.0.107:3000',<String,dynamic>{
-      'transports':['websocket'],
-      'autoConnect': false,
-    });
-
-    socket.connect();
-
-    socket.on('connect',(_){
-      print('Connected to server');
-
-    });
-
-
-
-
-    // Listen for incoming chat messages
-  socket.on('chat message', (data){
-    _message.add(data);
-  });
-
-
-
-
-    // Listen for disconnection
-    socket.on('disconnect', (_) {
-      print('Disconnected from server');
-    });
-
-
-
-
-    // Listen for errors
-    socket.on('connect_error', (data) {
-      print('Connection Error: $data');
-      setState(() {
-        _error = 'Connection Error: $data';
-      });
-    });
-
-    // Listen for connection timeout
-    socket.on('connect_timeout', (data) {
-      print('Connection Timeout: $data');
-      setState(() {
-        _error = 'Connection Timeout: $data';
-      });
-    });
-
-  }
-
-
-  void sendMessage(String message) {
-    // Emit a message to the server
-    socket.emit('chat message', message);
-  }
 
 
 
@@ -111,14 +47,10 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: ListView.builder(
-        itemCount: _message.length,
-        itemBuilder: (context, index) {
-          return Text(_message[index]);
-        },),
+
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          sendMessage("Testing");
+
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
