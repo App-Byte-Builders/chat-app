@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp( ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
